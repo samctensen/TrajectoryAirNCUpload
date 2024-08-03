@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 # URL of the website where files are located
 base_url = 'https://home.chpc.utah.edu/~u1260390/TA/latest_forecast/'
 # Path to the folder containing the input .nc files
-folder_path = 'NCFiles/'
+folder_path = 'ncfiles/'
 
 # Function to download files
 def get_files(mapbox_username, mapbox_access_token):

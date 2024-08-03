@@ -1,4 +1,4 @@
-#!/Users/sam/Desktop/myenv/bin/python3.12
+#!/Users/sam/WorkSpaces/trajectoryairncupload/bin/python3.12
 
 import sys
 import json

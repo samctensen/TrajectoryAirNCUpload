@@ -1,4 +1,4 @@
-#!/Users/sam/WorkSpaces/NCConversion/bin/python
+#!/Users/sam/WorkSpaces/trajectoryairncupload/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys
