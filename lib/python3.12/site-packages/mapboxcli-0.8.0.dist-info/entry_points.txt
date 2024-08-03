@@ -1,0 +1,4 @@
+
+      [console_scripts]
+      mapbox=mapboxcli.scripts.cli:main_group
+      

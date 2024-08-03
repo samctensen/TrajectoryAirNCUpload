@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: mapboxcli
+Version: 0.8.0
+Summary: Command line interface to Mapbox Web Services
+Home-page: https://github.com/mapbox/mapbox-cli-py
+Author: Sean Gillies
+Author-email: sean@mapbox.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Provides-Extra: test
+Requires-Dist: click
+Requires-Dist: click-plugins
+Requires-Dist: cligj (>=0.4)
+Requires-Dist: mapbox (==0.16.1)
+Requires-Dist: six
+Provides-Extra: test
+Requires-Dist: coveralls; extra == 'test'
+Requires-Dist: pytest (>=2.8); extra == 'test'
+Requires-Dist: pytest-cov; extra == 'test'
+Requires-Dist: responses; extra == 'test'
+Requires-Dist: mock; extra == 'test'
+
+UNKNOWN
+
+
