@@ -1,12 +1,12 @@
 # Trajectory Air NetCDF Conversion Tool
 
 ### Installation
-Before running, you need to install homebrew, tippecanoe, and clone the repo
+Before running, you need to install homebrew, tippecanoe, and clone the repo.
 * Install Homebrew:
     ```
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
-  * Pay attention during install and run the commands in the terminal it requires after the initial install
+  * Pay attention during install and run the commands in the terminal it requires after the initial install.
 * Install TippeCanoe Tileset Creator:
     ```
     brew install tippecanoe
@@ -27,7 +27,7 @@ Before running, you need to install homebrew, tippecanoe, and clone the repo
   ```
 
 ### Running the Upload Script
-Now that everything is installed, you can run the upload script
+Now that everything is installed, you can run the upload script.
 * Enter the ```/TrajectoryAirNCUpload/``` Repository Folder:
     ```
     cd TrajectoryAirNCUpload
