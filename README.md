@@ -1,4 +1,5 @@
-# Trajectory Air NetCDF Conversion Tool
+# Trajectory Air NetCDF Upload Tool
+This Trajectory Air repository uploads the 120 daily updated .nc files as vector tilesets to MapBox Studio. It first converts the .nc files to the commonly used .geojson file format before using MapBox's own [TippeCannoe](https://github.com/mapbox/tippecanoe) tool to convert the .geojson files to .mbtiles. These tilesets are uploaded to MapBox studio where they can be accessed visually at [TrajectoryAir](https://trajectory-air.vercel.app/).
 
 ### Installation
 Before running, you need to install homebrew, tippecanoe, and clone the repo.
