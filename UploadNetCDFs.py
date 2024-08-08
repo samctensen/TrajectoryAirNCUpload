@@ -224,7 +224,7 @@ def upload_mbtiles_to_mapbox(mbtiles_filenames: list, mapbox_username: str, mapb
     completed_jobs = 0
     total_jobs = len(mbtiles_filenames)
     print(f"\r({completed_jobs}/{total_jobs}) .mbtiles uploaded to MapBox.", end="")
-    
+
     with ThreadPoolExecutor(max_workers=16) as executor:  # Adjust max_workers as needed
         for mbtiles_filename in mbtiles_filenames:
             futures.append(executor.submit(upload_mbtile_file_to_mapbox, mbtiles_filename, mapbox_username, mapbox_access_token))
@@ -295,7 +295,7 @@ def clear_depreciated_tilesets(mapbox_username: str, mapbox_access_token: str):
         # Tileset is too new to delete
         else:
             break
-    print("Process complete. All files processed and uploaded.")
+    print("All files processed and uploaded.")
 
 if __name__ == '__main__':
     mapbox_username = input('Input Mapbox username: ')
