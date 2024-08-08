@@ -22,6 +22,10 @@ Before running, you need to install homebrew, tippecanoe, and clone the repo.
     ```
     git clone https://github.com/samctensen/TrajectoryAirNCUpload.git
     ```
+* Enter the ```/TrajectoryAirNCUpload/``` Repository Folder:
+    ```
+    cd TrajectoryAirNCUpload
+    ```
 * Run the Python Environment Install Script:
   ```
   ./install.sh
