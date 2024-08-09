@@ -43,7 +43,7 @@ def download_files() -> list:
     total_jobs = sum(24 if date not in (first_date, last_date) else (18 if date == first_date else 6) for date in dates)
     print(f"\r({completed_jobs}/{total_jobs}) .nc forecast files downloaded.", end="")
     
-    with ThreadPoolExecutor(max_workers=16) as executor:  # Adjust max_workers as needed
+    with ThreadPoolExecutor(max_workers=8) as executor:  # Adjust max_workers as needed
         for date in dates:
             datestring = date.strftime('%Y-%m-%d')
             if date == first_date:
@@ -96,7 +96,7 @@ def ncs_to_geojsons(net_cdf_filenames: list) -> list:
     total_jobs = len(net_cdf_filenames)
     print(f"\r({completed_jobs}/{total_jobs}) .nc files converted to .geojson.", end="")
     
-    with ThreadPoolExecutor(max_workers=16) as executor:  # Adjust max_workers as needed
+    with ThreadPoolExecutor(max_workers=8) as executor:  # Adjust max_workers as needed
         for net_cdf_filename in net_cdf_filenames:
             futures.append(executor.submit(nc_to_geojson, net_cdf_filename))
 
@@ -191,7 +191,7 @@ def geojsons_to_mbtiles(geojson_filenames: list) -> list:
     total_jobs = len(geojson_filenames)
     print(f"\r({completed_jobs}/{total_jobs}) .geojson files converted to .mbtiles.", end="")
 
-    with ThreadPoolExecutor(max_workers=16) as executor:  # Adjust max_workers as needed
+    with ThreadPoolExecutor(max_workers=8) as executor:  # Adjust max_workers as needed
         for geojson_filename in geojson_filenames:
             futures.append(executor.submit(geojson_to_mbtiles, geojson_filename))
 
@@ -225,7 +225,7 @@ def upload_mbtiles_to_mapbox(mbtiles_filenames: list, mapbox_username: str, mapb
     total_jobs = len(mbtiles_filenames)
     print(f"\r({completed_jobs}/{total_jobs}) .mbtiles uploaded to MapBox.", end="")
 
-    with ThreadPoolExecutor(max_workers=16) as executor:  # Adjust max_workers as needed
+    with ThreadPoolExecutor(max_workers=8) as executor:  # Adjust max_workers as needed
         for mbtiles_filename in mbtiles_filenames:
             futures.append(executor.submit(upload_mbtile_file_to_mapbox, mbtiles_filename, mapbox_username, mapbox_access_token))
 
