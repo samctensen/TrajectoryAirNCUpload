@@ -6,6 +6,7 @@ import pwinput
 import requests
 import subprocess
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 
@@ -240,40 +241,56 @@ def upload_mbtiles_to_mapbox(mbtiles_filenames: list, mapbox_username: str, mapb
 
 # Child function, uploads individual mbtile files to Mapbox.
 def upload_mbtile_file_to_mapbox(mbtiles_filename: str, mapbox_username: str, mapbox_access_token: str):
-    mbtiles_file_path = os.path.join(folder_path, mbtiles_filename)
-    # Delete existing tileset if it exists
-    tileset_id = f"{mapbox_username}.{mbtiles_filename.removesuffix('.mbtiles')}"
-    mapbox_delete_tileset_url = f'https://api.mapbox.com/tilesets/v1/{tileset_id}?access_token={mapbox_access_token}'
-    requests.delete(mapbox_delete_tileset_url)
+    max_retries = 3
+    retry_delay = 5  # seconds
 
-    # Get Mapbox credentials
-    mapbox_credentials_url = f'https://api.mapbox.com/uploads/v1/{mapbox_username}/credentials?access_token={mapbox_access_token}'
-    mapbox_credentials_response = requests.post(mapbox_credentials_url)
-    mapbox_credentials = mapbox_credentials_response.json()
+    for attempt in range(max_retries):
+        try:
+            mbtiles_file_path = os.path.join(folder_path, mbtiles_filename)
+            # Delete existing tileset if it exists
+            tileset_id = f"{mapbox_username}.{mbtiles_filename.removesuffix('.mbtiles')}"
+            mapbox_delete_tileset_url = f'https://api.mapbox.com/tilesets/v1/{tileset_id}?access_token={mapbox_access_token}'
+            requests.delete(mapbox_delete_tileset_url)
 
-    # Upload the tileset to AWS S3
-    s3 = boto3.client(
-        's3',
-        aws_access_key_id=mapbox_credentials['accessKeyId'],
-        aws_secret_access_key=mapbox_credentials['secretAccessKey'],
-        aws_session_token=mapbox_credentials['sessionToken'],
-    )
-    bucket = mapbox_credentials['bucket']
-    key = mapbox_credentials['key']
-    s3.upload_file(mbtiles_file_path, bucket, key)
+            # Get Mapbox credentials
+            mapbox_credentials_url = f'https://api.mapbox.com/uploads/v1/{mapbox_username}/credentials?access_token={mapbox_access_token}'
+            mapbox_credentials_response = requests.post(mapbox_credentials_url)
+            mapbox_credentials = mapbox_credentials_response.json()
 
-    # Upload S3 tileset to Mapbox Studio
-    upload_url = f'https://api.mapbox.com/uploads/v1/{mapbox_username}?access_token={mapbox_access_token}'
-    upload_payload = {
-        "url": f"https://{bucket}.s3.amazonaws.com/{key}",
-        "tileset": tileset_id,
-        "name": f"{mbtiles_filename.removesuffix('.mbtiles')}"
-    }
-    response = requests.post(upload_url, json=upload_payload)
-    upload_response = response.json()
-    if upload_response['error']:
-        print("Error uploading tileset to Mapbox.")
-    os.remove(mbtiles_file_path)
+            # Upload the tileset to AWS S3
+            s3 = boto3.client(
+                's3',
+                aws_access_key_id=mapbox_credentials['accessKeyId'],
+                aws_secret_access_key=mapbox_credentials['secretAccessKey'],
+                aws_session_token=mapbox_credentials['sessionToken'],
+            )
+            bucket = mapbox_credentials['bucket']
+            key = mapbox_credentials['key']
+            s3.upload_file(mbtiles_file_path, bucket, key)
+
+            # Upload S3 tileset to Mapbox Studio
+            upload_url = f'https://api.mapbox.com/uploads/v1/{mapbox_username}?access_token={mapbox_access_token}'
+            upload_payload = {
+                "url": f"https://{bucket}.s3.amazonaws.com/{key}",
+                "tileset": tileset_id,
+                "name": f"{mbtiles_filename.removesuffix('.mbtiles')}"
+            }
+            response = requests.post(upload_url, json=upload_payload)
+            upload_response = response.json()
+            if upload_response.get('error'):
+                print("Error uploading tileset to Mapbox.")
+            else:
+                os.remove(mbtiles_file_path)
+                break
+        except requests.exceptions.SSLError as e:
+            if attempt < max_retries - 1:
+                print(f"SSL error occurred, retrying in {retry_delay} seconds... (attempt {attempt + 1}/{max_retries})")
+                time.sleep(retry_delay)
+            else:
+                print(f"SSL error occurred, all retries failed. Error: {e}")
+        except Exception as e:
+            print(f"Exception occurred: {e}")
+            break
 
 # Deletes tilesets that are older than 5 hours
 def clear_depreciated_tilesets(mapbox_username: str, mapbox_access_token: str):
@@ -307,5 +324,7 @@ if __name__ == '__main__':
         geojson_filenames = ncs_to_geojsons(net_cdf_filenames)
         mbtile_filenames = geojsons_to_mbtiles(geojson_filenames)
         upload_mbtiles_to_mapbox(mbtile_filenames, mapbox_username, mapbox_access_token)
+        while len(os.listdir(folder_path)) > 0:
+            upload_mbtiles_to_mapbox(os.listdir(folder_path), mapbox_username, mapbox_access_token)
         clear_depreciated_tilesets(mapbox_username, mapbox_access_token)
     
