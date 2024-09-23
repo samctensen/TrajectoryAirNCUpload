@@ -2,5 +2,6 @@
 /include
 /lib
 /ncfiles
+/npyfiles
 pyvenv.cfg
 .DS_Store
