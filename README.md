@@ -1,4 +1,4 @@
-# Trajectory Air NetCDF Upload Tool
+# Trajectory Air Upload Tool
 This Trajectory Air repository uploads the 120 daily updated .nc files as vector tilesets to MapBox Studio. It first converts the .nc files to the commonly used .geojson file format before using MapBox's own [TippeCannoe](https://github.com/mapbox/tippecanoe) tool to convert the .geojson files to .mbtiles. These tilesets are uploaded to MapBox studio where they can be accessed visually at [TrajectoryAir](https://trajectory-air.vercel.app/).
 
 ### Installation
@@ -15,16 +15,16 @@ Before running, you need to install homebrew, tippecanoe, and clone the repo.
 * Clone the Repo:
     * Clone Project with SSH:
     ```
-    git clone git@github.com:samctensen/TrajectoryAirNCUpload.git
+    git clone git@github.com:samctensen/TrajectoryAirUploader.git
     ```
     or
     * Clone Project with HTTPS:
     ```
-    git clone https://github.com/samctensen/TrajectoryAirNCUpload.git
+    git clone https://github.com/samctensen/TrajectoryAirUploader.git
     ```
-* Enter the ```/TrajectoryAirNCUpload/``` Repository Folder:
+* Enter the ```/TrajectoryAirUploader/``` Repository Folder:
     ```
-    cd TrajectoryAirNCUpload
+    cd TrajectoryAirUploader
     ```
 * Run the Python Environment Install Script:
   ```
@@ -33,9 +33,9 @@ Before running, you need to install homebrew, tippecanoe, and clone the repo.
 
 ### Running the Upload Script
 Now that everything is installed, you can run the upload script.
-* Enter the ```/TrajectoryAirNCUpload/``` Repository Folder:
+* Enter the ```/TrajectoryAirUploader/``` Repository Folder:
     ```
-    cd TrajectoryAirNCUpload
+    cd TrajectoryAirUploader
     ```
 * Run the Python Environment Upload Script:
   ```
