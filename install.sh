@@ -12,5 +12,5 @@ pip install -r requirements.txt
 # Create directory for the NetCDF files
 mkdir ncfiles
 
-# Create directory for the NetCDF files
+# Create directory for the NumPy files
 mkdir npyfiles
