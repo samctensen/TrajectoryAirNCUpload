@@ -50,7 +50,6 @@ def download_files():
             completed_jobs += 1
             print(f"\r({completed_jobs}/{total_jobs}) .npy files downloaded.", end="")
             sys.stdout.flush()
-        print(np.load(folder_path + time_path))
 
 # Child function, downloads a single forecast file.
 def download_file(numpy_filename: str) -> (str | None):
@@ -100,7 +99,7 @@ def array_to_geojson(time_index: int) -> str:
     lat = np.load(folder_path + lat_path)
     lon = np.load(folder_path + lon_path)
     formatted_date = datetime.strptime(time[time_index], '%Y-%m-%d %H:%M:%S %Z')
-    geojson_filename = formatted_date.strftime("%Y-%m-%d_%H_CMAQ.geojson")
+    geojson_filename = formatted_date.strftime("%Y-%m-%d_%H.geojson")
     geojson_file_path = os.path.join(folder_path, geojson_filename)
 
     features = []
@@ -285,5 +284,7 @@ if __name__ == '__main__':
         geojson_filenames = numpy_to_geojsons()
         mbtile_filenames = geojsons_to_mbtiles(geojson_filenames)
         upload_mbtiles_to_mapbox(mbtile_filenames, mapbox_username, mapbox_access_token)
+        while len(os.listdir(folder_path)) > 0:
+            upload_mbtiles_to_mapbox(os.listdir(folder_path), mapbox_username, mapbox_access_token)
         clear_depreciated_tilesets(mapbox_username, mapbox_access_token)
         

@@ -4,4 +4,4 @@
 source bin/activate
 
 # Run the Python upload script
-python UploadNetCDFs.py
+python UploadCMAQ.py
